@@ -8,12 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="WSDemo" />
+        <module name="websocket" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="WSDemo" options="-parameters" />
+      <module name="websocket" options="-parameters" />
     </option>
   </component>
 </project>

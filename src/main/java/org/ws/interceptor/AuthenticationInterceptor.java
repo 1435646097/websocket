@@ -6,6 +6,7 @@
  */
 package org.ws.interceptor;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class MyInterceptor implements HandshakeInterceptor {
+public class AuthenticationInterceptor implements HandshakeInterceptor {
     /**
      * 握手前
      *
@@ -40,16 +41,15 @@ public class MyInterceptor implements HandshakeInterceptor {
         // 获得请求参数
         Map<String, String> paramMap = HttpUtil.decodeParamMap(request.getURI()
                                                                       .getQuery(), StandardCharsets.UTF_8);
-        String uid = request.getHeaders()
-                            .get("token")
-                            .stream()
-                            .findFirst()
-                            .orElseGet(() -> "");
-//        String uid = paramMap.get("token");
-        if (StrUtil.isNotBlank(uid)) {
+        String token = paramMap.get("username");
+        if (CharSequenceUtil.isBlank(token)) {
+            log.warn("未发现token,连接失败");
+            return false;
+        }
+        if (CharSequenceUtil.isNotBlank(token)) {
             // 放入属性域
-            attributes.put("token", uid);
-            log.info("用户 token {} 握手成功！", uid);
+            attributes.put("token", token);
+            log.info("用户 token {} 握手成功！", token);
             return true;
         }
         log.info("用户登录已失效");

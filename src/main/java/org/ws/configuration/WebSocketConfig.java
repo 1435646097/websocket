@@ -5,21 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.ws.handler.HttpAuthHandler;
-import org.ws.interceptor.MyInterceptor;
+import org.ws.handler.impl.TtsWebSocketHandler;
+import org.ws.interceptor.AuthenticationInterceptor;
 
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
-    private HttpAuthHandler httpAuthHandler;
+    private TtsWebSocketHandler ttsHandler;
     @Autowired
-    private MyInterceptor myInterceptor;
+    private AuthenticationInterceptor authInterceptor;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(httpAuthHandler, "myWS")
-                .addInterceptors(myInterceptor)
-                .setAllowedOrigins("*");
+        registry.addHandler(ttsHandler, "myWS")
+                .addInterceptors(authInterceptor)
+                .setAllowedOriginPatterns("*");
     }
 }
