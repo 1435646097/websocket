@@ -7,7 +7,6 @@
 package org.ws.interceptor;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,9 +18,10 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+
 /**
- * @author buhao
- * @version MyInterceptor.java, v 0.1 2019-10-17 19:21 buhao
+ * @author Liao.Ximing
+ * @date 2023/03/13
  */
 @Component
 @Slf4j
@@ -39,17 +39,16 @@ public class AuthenticationInterceptor implements HandshakeInterceptor {
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         log.info("握手开始");
         // 获得请求参数
-        Map<String, String> paramMap = HttpUtil.decodeParamMap(request.getURI()
-                                                                      .getQuery(), StandardCharsets.UTF_8);
-        String token = paramMap.get("username");
-        if (CharSequenceUtil.isBlank(token)) {
+        Map<String, String> paramMap = HttpUtil.decodeParamMap(request.getURI().getQuery(), StandardCharsets.UTF_8);
+        String sessionId = paramMap.get("username");
+        if (CharSequenceUtil.isBlank(sessionId)) {
             log.warn("未发现token,连接失败");
             return false;
         }
-        if (CharSequenceUtil.isNotBlank(token)) {
+        if (CharSequenceUtil.isNotBlank(sessionId)) {
             // 放入属性域
-            attributes.put("token", token);
-            log.info("用户 token {} 握手成功！", token);
+            attributes.put("id", sessionId);
+            log.info("用户 sessionId {} 握手成功！", sessionId);
             return true;
         }
         log.info("用户登录已失效");

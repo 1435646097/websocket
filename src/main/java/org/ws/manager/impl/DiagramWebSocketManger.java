@@ -11,11 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2023/03/13
  */
 @Component
-public class TtsWebSocketManager extends WebSocketSessionManager {
-    private ConcurrentHashMap<String, WebSocketSession> TTS_WEBSOCKET_STATE_POOL = new ConcurrentHashMap<>();
-
+public class DiagramWebSocketManger  extends WebSocketSessionManager {
+    private ConcurrentHashMap<String, WebSocketSession> DIAGRAM_WEBSOCKET_STATE_POOL = new ConcurrentHashMap<>();
     @Override
     public ConcurrentHashMap<String, WebSocketSession> getSessionStatePool() {
-        return TTS_WEBSOCKET_STATE_POOL;
+        return DIAGRAM_WEBSOCKET_STATE_POOL;
     }
 }

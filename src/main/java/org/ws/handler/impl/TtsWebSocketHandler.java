@@ -17,11 +17,11 @@ import org.ws.manager.impl.TtsWebSocketManager;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Objects;
+
 
 /**
- * @author buhao
- * @version MyWSHandler.java, v 0.1 2019-10-17 17:10 buhao
+ * @author Liao.Ximing
+ * @date 2023/03/13
  */
 @Component
 @Slf4j

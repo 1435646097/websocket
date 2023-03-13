@@ -13,9 +13,10 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 /**
- * @author buhao
- * @version WsSessionManager.java, v 0.1 2019-10-22 10:24 buhao
+ * @author Liao.Ximing
+ * @date 2023/03/13
  */
 @Slf4j
 public abstract class WebSocketSessionManager {
@@ -28,21 +29,21 @@ public abstract class WebSocketSessionManager {
     /**
      * 添加 session
      *
-     * @param key
+     * @param sessionId 会话id
      */
-    public void addSession(String key, WebSocketSession session) {
+    public void addSession(String sessionId, WebSocketSession session) {
         // 添加 session
-        getSessionStatePool().put(key, session);
+        getSessionStatePool().put(sessionId, session);
     }
 
 
     /**
      * 删除并同步关闭连接
      *
-     * @param key
+     * @param sessionId 会话id
      */
-    public void removeAndClose(String key) throws IOException {
-        WebSocketSession session = getSessionStatePool().remove(key);
+    public void removeAndClose(String sessionId) throws IOException {
+        WebSocketSession session = getSessionStatePool().remove(sessionId);
         if (session != null && session.isOpen()) {
             // 关闭连接
             session.close();
@@ -59,6 +60,10 @@ public abstract class WebSocketSessionManager {
         return getSessionStatePool().get(key);
     }
 
+    /**
+     * 获取所有WebSocket会话
+     * @return {@link Collection}<{@link WebSocketSession}>
+     */
     public Collection<WebSocketSession> getAllSession() {
         return getSessionStatePool().values();
     }
